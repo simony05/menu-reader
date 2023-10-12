@@ -168,3 +168,63 @@ print(classification_report(y_test.argmax(axis = 1),
                             predictions.argmax(axis = 1), 
                             target_names = class_names, 
                             zero_division = 0))
+
+EPOCHS = 30
+
+history = model.fit(
+    data_augment.flow(x_train, y_train, batch_size = BS),
+    validation_data = (x_test, y_test),
+    steps_per_epoch = len(x_train) // BS,
+    epochs = EPOCHS,
+    class_weight = class_weight,
+    verbose = 1
+)
+
+# Evaluate for 80 epochs
+class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt"
+class_names = [i for i in class_names]
+predictions = model.predict(x_test, batch_size = BS)
+print(classification_report(y_test.argmax(axis = 1), 
+                            predictions.argmax(axis = 1), 
+                            target_names = class_names, 
+                            zero_division = 0))
+
+EPOCHS = 20
+
+history = model.fit(
+    data_augment.flow(x_train, y_train, batch_size = BS),
+    validation_data = (x_test, y_test),
+    steps_per_epoch = len(x_train) // BS,
+    epochs = EPOCHS,
+    class_weight = class_weight,
+    verbose = 1
+)
+
+# Evaluate for 100 epochs
+class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt"
+class_names = [i for i in class_names]
+predictions = model.predict(x_test, batch_size = BS)
+print(classification_report(y_test.argmax(axis = 1), 
+                            predictions.argmax(axis = 1), 
+                            target_names = class_names, 
+                            zero_division = 0))
+
+history = model.fit(
+    data_augment.flow(x_train, y_train, batch_size = BS),
+    validation_data = (x_test, y_test),
+    steps_per_epoch = len(x_train) // BS,
+    epochs = EPOCHS,
+    class_weight = class_weight,
+    verbose = 1
+)
+
+# Evaluate for 120 epochs
+class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt"
+class_names = [i for i in class_names]
+predictions = model.predict(x_test, batch_size = BS)
+print(classification_report(y_test.argmax(axis = 1), 
+                            predictions.argmax(axis = 1), 
+                            target_names = class_names, 
+                            zero_division = 0))
+
+model.save_weights("model.h5")
