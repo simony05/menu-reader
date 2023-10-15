@@ -1,5 +1,6 @@
 # Install libraries
 
+import pandas as pd
 import numpy as np
 import tensorflow as tf
 import cv2
@@ -11,21 +12,13 @@ from keras.models import Model
 from keras import regularizers, backend as K
 from sklearn.metrics import classification_report
 
-# Download EMNIST data
-from emnist import extract_training_samples, extract_test_samples
-train_images, train_labels = extract_training_samples('balanced')
-test_images, test_labels = extract_test_samples('balanced')
-
-# Combine train images and test images (vstack for more than 3 dimensions)
-images = np.vstack([train_images, test_images])
-
-# Combine train labels and test labels (hstack for up to 3 dimensions)
-labels = np.hstack([train_labels, test_labels])
-
-print(images.shape)
+# Read data csv
+data = pd.read_csv("data.csv")
+images = data["image"]
+print(images[1].shape)
 
 # Resize from (28, 28) to (32, 32)
-images = [cv2.resize(img, (32, 32)) for img in images]
+images = [cv2.resize(img, (32, 32)) for img in data["image"]]
 images = np.array(images, dtype = "float32")
 
 print(images.shape)
@@ -38,7 +31,7 @@ print(images.shape)
 
 # Convert labels from integer to vector for easier model fitting
 lb = LabelBinarizer()
-labels = lb.fit_transform(labels)
+labels = lb.fit_transform(data["label"])
 
 # Weights for each character
 class_totals = labels.sum(axis = 0)
@@ -55,7 +48,7 @@ x_train, x_test, y_train, y_test = train_test_split(
     labels,
     test_size = 0.25,
     stratify = labels,
-    random_state = 30
+    random_state = 30,
 )
 
 # Data augmentation to improve results

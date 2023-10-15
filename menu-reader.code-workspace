@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../Desktop/chinese_characters"
+		}
+	],
+	"settings": {
+		"terminal.integrated.gpuAcceleration": "on"
+	}
+}
