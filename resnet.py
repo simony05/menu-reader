@@ -4,18 +4,22 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 import cv2
-from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import BatchNormalization, Conv2D, AveragePooling2D, MaxPooling2D, ZeroPadding2D, Activation, Dense, Flatten, Input, add
 from keras.models import Model
 from keras import regularizers, backend as K
 from sklearn.metrics import classification_report
+from ast import literal_eval
 
 # Read data csv
-data = pd.read_csv("data.csv")
-images = data["image"]
-print(images[1].shape)
+data = pd.read_csv("data.csv", converters = {"image": literal_eval})
+print(data.tail())
+data["image"] = data["image"].to_numpy()
+
+images = [np.array(img) for img in data["image"]]
+images = np.array(images)
+print(images[1].dtype)
 
 # Resize from (28, 28) to (32, 32)
 images = [cv2.resize(img, (32, 32)) for img in data["image"]]
