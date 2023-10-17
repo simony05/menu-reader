@@ -5,6 +5,7 @@ import numpy as np
 import tensorflow as tf
 import cv2
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelBinarizer
 from keras.preprocessing.image import ImageDataGenerator
 from keras.layers import BatchNormalization, Conv2D, AveragePooling2D, MaxPooling2D, ZeroPadding2D, Activation, Dense, Flatten, Input, add
 from keras.models import Model
@@ -17,12 +18,13 @@ data = pd.read_csv("data.csv", converters = {"image": literal_eval})
 print(data.tail())
 data["image"] = data["image"].to_numpy()
 
-images = [np.array(img) for img in data["image"]]
-images = np.array(images)
-print(images[1].dtype)
+images_np = [np.array(img).astype(np.uint8) for img in data["image"]] # Changed to unit8 because int32 was not resizing
+images_np = np.array(images_np)
+print(images_np[1])
+print(images_np[1].dtype) 
 
 # Resize from (28, 28) to (32, 32)
-images = [cv2.resize(img, (32, 32)) for img in data["image"]]
+images = [cv2.resize(img, (32, 32)) for img in images_np]
 images = np.array(images, dtype = "float32")
 
 print(images.shape)
