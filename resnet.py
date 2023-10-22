@@ -17,17 +17,15 @@ from ast import literal_eval
 data = pd.read_csv("data.csv", converters = {"image": literal_eval})
 print(data.tail())
 data["image"] = data["image"].to_numpy()
-
+ 
+# Convert to correct datatypes for learning
 images_np = [np.array(img).astype(np.uint8) for img in data["image"]] # Changed to unit8 because int32 was not resizing
 images_np = np.array(images_np)
-print(images_np[1])
-print(images_np[1].dtype) 
+labels_np = np.array(data["label"]).astype(np.uint8) # Changed to unit8 because int64 was too much memory
 
 # Resize from (28, 28) to (32, 32)
 images = [cv2.resize(img, (32, 32)) for img in images_np]
 images = np.array(images, dtype = "float32")
-
-print(images.shape)
 
 # Preprocessing
 images = np.expand_dims(images, axis = -1) # Add channel dimension
@@ -37,7 +35,7 @@ print(images.shape)
 
 # Convert labels from integer to vector for easier model fitting
 lb = LabelBinarizer()
-labels = lb.fit_transform(data["label"])
+labels = lb.fit_transform(labels_np)
 
 # Weights for each character
 class_totals = labels.sum(axis = 0)
@@ -159,9 +157,13 @@ history = model.fit(
     verbose = 1
 )
 
+model.save_weights("model.h5")
+
+# Classes
+classes = pd.read_csv("classes.csv")
+class_names = [character for character in classes["character"]]
+
 # Evaluate for 50 epochs
-class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt"
-class_names = [i for i in class_names]
 predictions = model.predict(x_test, batch_size = BS)
 print(classification_report(y_test.argmax(axis = 1), 
                             predictions.argmax(axis = 1), 
@@ -180,8 +182,6 @@ history = model.fit(
 )
 
 # Evaluate for 80 epochs
-class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt"
-class_names = [i for i in class_names]
 predictions = model.predict(x_test, batch_size = BS)
 print(classification_report(y_test.argmax(axis = 1), 
                             predictions.argmax(axis = 1), 
@@ -200,8 +200,6 @@ history = model.fit(
 )
 
 # Evaluate for 100 epochs
-class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt"
-class_names = [i for i in class_names]
 predictions = model.predict(x_test, batch_size = BS)
 print(classification_report(y_test.argmax(axis = 1), 
                             predictions.argmax(axis = 1), 
@@ -218,8 +216,6 @@ history = model.fit(
 )
 
 # Evaluate for 120 epochs
-class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt"
-class_names = [i for i in class_names]
 predictions = model.predict(x_test, batch_size = BS)
 print(classification_report(y_test.argmax(axis = 1), 
                             predictions.argmax(axis = 1), 
