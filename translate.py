@@ -8,5 +8,3 @@ def translate(text):
         TargetLanguageCode = 'en'
     )
     return result['TranslatedText']
-
-print(translate("你很肥胖"))

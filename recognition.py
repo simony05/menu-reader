@@ -26,5 +26,3 @@ def image_to_text(image):
     for output in json.loads(response.text):
         outputs.append(output['words'])
     return outputs
-
-print(image_to_text("348s.jpg"))
