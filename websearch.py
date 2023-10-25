@@ -19,8 +19,8 @@ def unpack(results):
 		 	"similar results": similar}
 
 def google_search(food):
-	url = "https://google-web-search1.p.rapidapi.com/"
 	configure()
+	url = "https://google-web-search1.p.rapidapi.com/"
 	querystring = {"query": food,"limit": "1","related_keywords": "true"}
 
 	headers = {
@@ -29,7 +29,6 @@ def google_search(food):
 	}
 
 	response = requests.get(url, headers = headers, params = querystring)
-
 	return unpack(response.json())
 
 print(google_search("seaweed egg flower soup"))
