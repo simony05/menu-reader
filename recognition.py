@@ -4,6 +4,11 @@ from aws_requests_auth.boto_utils import BotoAWSRequestsAuth
 from PIL import Image
 import base64
 import io
+from dotenv import load_dotenv
+import os
+
+def configure():
+	load_dotenv()
 
 def image64(path):
     with Image.open(path) as img:
@@ -13,11 +18,12 @@ def image64(path):
     return encoded_img
 
 def image_to_text(image):
-    auth = BotoAWSRequestsAuth(aws_host='ox0imu1xdj.execute-api.us-west-1.amazonaws.com',
+    configure()
+    auth = BotoAWSRequestsAuth(aws_host=f"{os.getenv('aws_auth')}.execute-api.us-west-1.amazonaws.com",
                            aws_region='us-west-1',
                            aws_service='execute-api')
 
-    url = 'https://ox0imu1xdj.execute-api.us-west-1.amazonaws.com/prod/general-ocr-standard-ml'
+    url = f"https://{os.getenv('aws_auth')}.execute-api.us-west-1.amazonaws.com/prod/general-ocr-standard-ml"
     payload = {
         'img': image64(image)
     }

@@ -1,4 +1,4 @@
-from recognition import image64, image_to_text
+from recognition import configure, image64, image_to_text
 from translate import translate
 
 def image_translate(image):

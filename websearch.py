@@ -1,6 +1,9 @@
 import requests
+from dotenv import load_dotenv
+import os
 
-url = "https://google-web-search1.p.rapidapi.com/"
+def configure():
+	load_dotenv()
 
 def unpack(results):
 	result = []
@@ -16,10 +19,12 @@ def unpack(results):
 		 	"similar results": similar}
 
 def google_search(food):
+	url = "https://google-web-search1.p.rapidapi.com/"
+	configure()
 	querystring = {"query": food,"limit": "1","related_keywords": "true"}
 
 	headers = {
-		"X-RapidAPI-Key": "57204ffb4dmsh323ba2a1a5d8c1dp187e29jsn49382c1b181b",
+		"X-RapidAPI-Key": os.getenv('search_api'),
 		"X-RapidAPI-Host": "google-web-search1.p.rapidapi.com"
 	}
 

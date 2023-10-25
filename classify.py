@@ -15,16 +15,17 @@ def normalize(text):
     kept_words = [word for word in kept_words if not word == "yuan"] # Remove "yuan"
     return (" ".join(kept_words)).strip()
 
-classifier = pipeline("zero-shot-classification", device = 0)
-
 translations = image_translate("menu.jpg")
 
-foods = []
-labels = ["food", "not food"]
-for translation in translations:
-    results = classifier(translation, labels)
-    if results['labels'][0] == "food":
-        if results['scores'][0] > 0.99:
-            foods.append(normalize(results['sequence']))
+def classify(translations):
+    classifier = pipeline("zero-shot-classification", device = 0)
 
-print(foods)
+    foods = []
+    labels = ["food", "not food"]
+    for translation in translations:
+        results = classifier(translation, labels)
+        if results['labels'][0] == "food":
+            if results['scores'][0] > 0.99:
+                foods.append(normalize(results['sequence']))
+
+    return foods
