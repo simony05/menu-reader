@@ -1,5 +1,4 @@
-from transformers import pipeline
-from imagetranslate import image_translate
+#from transformers import pipeline
 import nltk
 from nltk.corpus import stopwords
 import string
@@ -14,8 +13,6 @@ def normalize(text):
     kept_words = [word for word in kept_words if not word.isnumeric()] # Remove numbers
     kept_words = [word for word in kept_words if not word == "yuan"] # Remove "yuan"
     return (" ".join(kept_words)).strip()
-
-translations = image_translate("menu.jpg")
 
 def classify(translations):
     classifier = pipeline("zero-shot-classification", device = 0)
